@@ -39,7 +39,7 @@ gem "kamal", require: false
 gem "thruster", require: false
 
 # HTTP library
-gem "httparty", "~> 0.18.1"
+gem "httparty", "~> 0.23.1"
 
 # csv library
 gem "csv", "~> 3.2"
