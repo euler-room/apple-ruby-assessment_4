@@ -1,0 +1,53 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://geocoding.geo.census.gov/geocoder/locations/address?benchmark=4&city=New%20York&format=json&state=NY&street=315%20Bowery&zip=10003
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization: "[FILTERED]"
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Date:
+      - Sun, 13 Apr 2025 20:14:14 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '657'
+      Connection:
+      - keep-alive
+      X-Frame-Options:
+      - DENY
+      Cache-Control:
+      - private, no-store
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1;mode=block
+      Vary:
+      - Origin
+      Set-Cookie:
+      - TS0193e6a1=01283c52a42d45a3a433c43f931f9287eb91ad095b86fb32153986c9b6c7172245da9405e3ea1084dacd1f211a7d232b63a396452b;
+        Path=/; Domain=.geocoding.geo.census.gov; Secure; HttpOnly;
+    body:
+      encoding: UTF-8
+      string: '{"result":{"input":{"address":{"zip":"10003","city":"New York","street":"315
+        Bowery","state":"NY"},"benchmark":{"isDefault":true,"benchmarkDescription":"Public
+        Address Ranges - Current Benchmark","id":"4","benchmarkName":"Public_AR_Current"}},"addressMatches":[{"tigerLine":{"side":"R","tigerLineId":"59661278"},"coordinates":{"x":-73.992154089981,"y":40.725164353193},"addressComponents":{"zip":"10003","streetName":"BOWERY","preType":"","city":"NEW
+        YORK","preDirection":"","suffixDirection":"","fromAddress":"301","state":"NY","suffixType":"","toAddress":"315","suffixQualifier":"","preQualifier":""},"matchedAddress":"315
+        BOWERY, NEW YORK, NY, 10003"}]}}'
+  recorded_at: Sun, 13 Apr 2025 20:14:14 GMT
+recorded_with: VCR 6.3.1

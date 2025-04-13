@@ -1,0 +1,50 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://geocoding.geo.census.gov/geocoder/locations/address?benchmark=4&city=Crisis&format=json&state=XO&street=Existential&zip=00000
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization: "[FILTERED]"
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Date:
+      - Sun, 13 Apr 2025 20:14:14 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '263'
+      Connection:
+      - keep-alive
+      X-Frame-Options:
+      - DENY
+      Cache-Control:
+      - private, no-store
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1;mode=block
+      Vary:
+      - Origin
+      Set-Cookie:
+      - TS0193e6a1=01283c52a4f9f4c660ccd6a681971320ca6aa245d4efcea4c8687bba3eba2454a409a907f291d0055565752287cc74642df962e29f;
+        Path=/; Domain=.geocoding.geo.census.gov; Secure; HttpOnly;
+    body:
+      encoding: UTF-8
+      string: '{"result":{"input":{"address":{"zip":"00000","city":"Crisis","street":"Existential","state":"XO"},"benchmark":{"isDefault":true,"benchmarkDescription":"Public
+        Address Ranges - Current Benchmark","id":"4","benchmarkName":"Public_AR_Current"}},"addressMatches":[]}}'
+  recorded_at: Sun, 13 Apr 2025 20:14:14 GMT
+recorded_with: VCR 6.3.1
