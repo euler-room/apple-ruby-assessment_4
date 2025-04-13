@@ -1,0 +1,68 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.weather.gov/points/999,999
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization: "[FILTERED]"
+  response:
+    status:
+      code: 400
+      message: Bad Request
+    headers:
+      Server:
+      - nginx/1.20.1
+      Content-Type:
+      - application/problem+json
+      X-Powered-By:
+      - PHP/8.0.30
+      X-Request-Id:
+      - f0899200-9fe8-484b-ab7b-1e9ba84bed5a
+      X-Correlation-Id:
+      - a1bc9fc6
+      X-Server-Id:
+      - vm-bldr-nids-apiapp10.ncep.noaa.gov
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Expose-Headers:
+      - X-Correlation-Id, X-Request-Id, X-Server-Id
+      Pragma:
+      - no-cache
+      Content-Length:
+      - '314'
+      Cache-Control:
+      - private, must-revalidate, max-age=86394
+      Expires:
+      - Mon, 14 Apr 2025 20:14:09 GMT
+      Date:
+      - Sun, 13 Apr 2025 20:14:15 GMT
+      Connection:
+      - keep-alive
+      X-Edge-Request-Id:
+      - b06a2458
+      Vary:
+      - Accept,Feature-Flags,Accept-Language
+      Strict-Transport-Security:
+      - max-age=31536000 ; includeSubDomains ; preload
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+            "correlationId": "a1bc9fc6",
+            "title": "Invalid Parameter",
+            "type": "https://api.weather.gov/problems/InvalidParameter",
+            "status": 400,
+            "detail": "Parameter \"point\" is invalid: '999,999' does not appear to be a valid coordinate",
+            "instance": "https://api.weather.gov/requests/a1bc9fc6"
+        }
+  recorded_at: Sun, 13 Apr 2025 20:14:15 GMT
+recorded_with: VCR 6.3.1

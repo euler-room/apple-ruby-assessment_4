@@ -1,0 +1,220 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.weather.gov/points/45.2397485,-123.6054803
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization: "[FILTERED]"
+  response:
+    status:
+      code: 301
+      message: Moved Permanently
+    headers:
+      Server:
+      - nginx/1.20.1
+      Content-Type:
+      - application/problem+json
+      X-Powered-By:
+      - PHP/8.0.30
+      Location:
+      - "/points/45.2397,-123.6055"
+      X-Request-Id:
+      - 3b204817-ec86-4c96-aca5-360cafb9f325
+      X-Correlation-Id:
+      - c4b7b93f
+      X-Server-Id:
+      - vm-bldr-nids-apiapp3.ncep.noaa.gov
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Expose-Headers:
+      - X-Correlation-Id, X-Request-Id, X-Server-Id
+      Pragma:
+      - no-cache
+      Content-Length:
+      - '483'
+      Cache-Control:
+      - private, must-revalidate, max-age=76436
+      Expires:
+      - Mon, 14 Apr 2025 17:28:11 GMT
+      Date:
+      - Sun, 13 Apr 2025 20:14:15 GMT
+      Connection:
+      - keep-alive
+      X-Edge-Request-Id:
+      - b06a2005
+      Vary:
+      - Accept,Feature-Flags,Accept-Language
+      Strict-Transport-Security:
+      - max-age=31536000 ; includeSubDomains ; preload
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+            "correlationId": "c4b7b93f",
+            "title": "Adjusting Precision Of Point Coordinate",
+            "type": "https://api.weather.gov/problems/AdjustPointPrecision",
+            "status": 301,
+            "detail": "The precision of latitude/longitude points is limited to 4 decimal digits for efficiency. The location attribute contains your request mapped to the nearest supported point. If your client supports it, you will be redirected.",
+            "instance": "https://api.weather.gov/requests/c4b7b93f"
+        }
+  recorded_at: Sun, 13 Apr 2025 20:14:15 GMT
+- request:
+    method: get
+    uri: https://api.weather.gov/points/45.2397,-123.6055
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization: "[FILTERED]"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.20.1
+      Content-Type:
+      - application/geo+json
+      X-Powered-By:
+      - PHP/8.0.30
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Expose-Headers:
+      - X-Correlation-Id, X-Request-Id, X-Server-Id
+      X-Request-Id:
+      - 0fc52c92-0cb3-470f-9cfa-d9411093a87a
+      X-Correlation-Id:
+      - 9e7fe0ce
+      X-Server-Id:
+      - vm-bldr-nids-apiapp2.ncep.noaa.gov
+      Vary:
+      - Accept,Feature-Flags,Accept-Language
+      - Accept-Encoding
+      Cache-Control:
+      - public, max-age=76364, s-maxage=120
+      Expires:
+      - Mon, 14 Apr 2025 17:26:59 GMT
+      Date:
+      - Sun, 13 Apr 2025 20:14:15 GMT
+      Content-Length:
+      - '3062'
+      Connection:
+      - keep-alive
+      X-Edge-Request-Id:
+      - b06a2231
+      Strict-Transport-Security:
+      - max-age=31536000 ; includeSubDomains ; preload
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+            "@context": [
+                "https://geojson.org/geojson-ld/geojson-context.jsonld",
+                {
+                    "@version": "1.1",
+                    "wx": "https://api.weather.gov/ontology#",
+                    "s": "https://schema.org/",
+                    "geo": "http://www.opengis.net/ont/geosparql#",
+                    "unit": "http://codes.wmo.int/common/unit/",
+                    "@vocab": "https://api.weather.gov/ontology#",
+                    "geometry": {
+                        "@id": "s:GeoCoordinates",
+                        "@type": "geo:wktLiteral"
+                    },
+                    "city": "s:addressLocality",
+                    "state": "s:addressRegion",
+                    "distance": {
+                        "@id": "s:Distance",
+                        "@type": "s:QuantitativeValue"
+                    },
+                    "bearing": {
+                        "@type": "s:QuantitativeValue"
+                    },
+                    "value": {
+                        "@id": "s:value"
+                    },
+                    "unitCode": {
+                        "@id": "s:unitCode",
+                        "@type": "@id"
+                    },
+                    "forecastOffice": {
+                        "@type": "@id"
+                    },
+                    "forecastGridData": {
+                        "@type": "@id"
+                    },
+                    "publicZone": {
+                        "@type": "@id"
+                    },
+                    "county": {
+                        "@type": "@id"
+                    }
+                }
+            ],
+            "id": "https://api.weather.gov/points/45.2397,-123.6055",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -123.6055,
+                    45.2397
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/points/45.2397,-123.6055",
+                "@type": "wx:Point",
+                "cwa": "PQR",
+                "forecastOffice": "https://api.weather.gov/offices/PQR",
+                "gridId": "PQR",
+                "gridX": 80,
+                "gridY": 97,
+                "forecast": "https://api.weather.gov/gridpoints/PQR/80,97/forecast",
+                "forecastHourly": "https://api.weather.gov/gridpoints/PQR/80,97/forecast/hourly",
+                "forecastGridData": "https://api.weather.gov/gridpoints/PQR/80,97",
+                "observationStations": "https://api.weather.gov/gridpoints/PQR/80,97/stations",
+                "relativeLocation": {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            -123.824616,
+                            45.27901
+                        ]
+                    },
+                    "properties": {
+                        "city": "Beaver",
+                        "state": "OR",
+                        "distance": {
+                            "unitCode": "wmoUnit:m",
+                            "value": 17698.485631856
+                        },
+                        "bearing": {
+                            "unitCode": "wmoUnit:degree_(angle)",
+                            "value": 104
+                        }
+                    }
+                },
+                "forecastZone": "https://api.weather.gov/zones/forecast/ORZ106",
+                "county": "https://api.weather.gov/zones/county/ORC057",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ORZ682",
+                "timeZone": "America/Los_Angeles",
+                "radarStation": "KRTX"
+            }
+        }
+  recorded_at: Sun, 13 Apr 2025 20:14:15 GMT
+recorded_with: VCR 6.3.1
