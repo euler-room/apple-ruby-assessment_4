@@ -73,12 +73,11 @@ class CensusGovService
     begin
       parsed_response = response.parsed_response
       address_matches = parsed_response.dig('result', 'addressMatches')
-
       if address_matches&.any?
         address_matches.first
       else
         Rails.logger.error "No matching addresses found for: #{location.attributes}"
-        nil
+        raise RuntimeError, "Error: No Matching Addresses Found"
       end
     rescue JSON::ParserError => e
       Rails.logger.error "Failed to parse Census API response: #{e.message}"
@@ -89,6 +88,10 @@ class CensusGovService
     Rails.logger.error "HTTP request failed: #{e.class} - #{e.message}"
     nil
   rescue StandardError => e
+    # Don't rescue the "No Matching Addresses Found" error
+    if e.message == "Error: No Matching Addresses Found"
+      raise
+    end
     Rails.logger.error "Unexpected error in get_location_data: #{e.class} - #{e.message}"
     Rails.logger.error e.backtrace.join("\n")
     nil

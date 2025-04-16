@@ -35,13 +35,12 @@ class Location < ApplicationRecord
       false
     end
   rescue StandardError => e
-    Rails.logger.error "Error in save_with_coordinates: #{e.class} - #{e.message}"
-    Rails.logger.error e.backtrace.join("\n")
+    Rails.logger.error "Error saving location with coordinates: #{e.message}"
     false
   end
 
   def self.find_by_address(params)
-    normalized_params = params.transform_values(&:upcase)
+    normalized_params = params.transform_keys(&:to_sym).transform_values(&:upcase)
     
     where(
       street: normalized_params[:street],
