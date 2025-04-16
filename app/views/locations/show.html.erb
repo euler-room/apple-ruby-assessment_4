@@ -1,0 +1,18 @@
+<% content_for :is_cached_result do %>
+  <% if @cached_result %>
+    <p class="h6">cached</p>
+  <% end %>
+<% end %>
+<div class="container">
+  <div class="container">
+    <div class="container ">
+      <p class="h4"> <%= formatted_address(@location) %> </div>
+      <div class="container pd-3">
+        <p class="display-6"> Current Temperature: <%= @forecast.pop %> </p>
+      </div>
+    </div>
+    <%- @forecast.each do |day| -%>
+      <%= render partial: "day", locals: { day: day } %>
+    <%- end -%>
+  </div>
+</div>

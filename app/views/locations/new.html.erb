@@ -1,0 +1,47 @@
+
+<div class="container mb-3">
+  <% if flash[:alert] %>
+    <div class="alert alert-warning" role="alert">
+      <div class="alert h3"><%= flash[:alert] %></div>
+    </div>
+  <% end %>
+  <div class="mb-3">
+    <h4>Enter Location</h4>
+  </div>
+  <%= form_with model: @location do |form| %>
+    <div class="row">
+      <div class="col-auto">
+        <div class="mb-3">      
+          <%= form.text_field :street, class: "form-control", placeholder: "Enter street address" %>
+        </div>
+        <div class="mb-3">
+          <%= form.text_field :city, class: "form-control", placeholder: "Enter city" %>
+        </div>
+      </div>
+      <div class="col-auto">
+        <div class="mb-3">      
+          <%= form.text_field :state, class: "form-control", placeholder: "Enter state" %>
+        </div>
+        <div class="mb-3">      
+          <%= form.text_field :zip, class: "form-control", placeholder: "Enter zip code" %>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-auto">
+        <%= form.submit "Submit", class: "btn btn-primary btn-md" %>
+      </div>
+    </div>
+  <% end %>
+  <br/>
+  <% if Location.all.any? %>
+    <div class="mb-3">
+      <h5>Or choose from recent addresses</h5>
+    </div>
+    <div class="list-group">
+      <% Location.recent.each do |location| %>
+        <%= link_to formatted_address(location), location_path(location), class: "list-group-item" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
