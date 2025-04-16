@@ -5,12 +5,12 @@ class CensusGovService
   
   base_uri 'https://geocoding.geo.census.gov/geocoder/locations'
 
-  def self.get_coordinates(address)
-    location_data = get_location_data(address)
-    { latitude: location_data['coordinates']['x'], longitude: location_data['coordinates']['y'] }
+  def self.get_coordinates(location)
+    location_data = get_location_data(location)
+    { latitude: location_data['coordinates']['y'], longitude: location_data['coordinates']['x'] }
   end
 
-  # fetches coordinates for a given address: 
+  # fetches coordinates for a given location instance: 
   # { 
   #   street: '123 Main St',
   #   city: 'Anytown',
@@ -37,12 +37,12 @@ class CensusGovService
   #     ]
   #   }
   # }
-  def self.get_location_data(address)
+  def self.get_location_data(location)
     response = get('/address', query: {
-      street: address[:street],
-      city: address[:city],
-      state: address[:state],
-      zip: address[:zip],
+      street: location.street,
+      city: location.city,
+      state: location.state,
+      zip: location.zip,
       benchmark: 4,
       format: 'json'
     })
