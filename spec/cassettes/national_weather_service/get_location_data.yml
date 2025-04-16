@@ -28,11 +28,11 @@ http_interactions:
       Location:
       - "/points/45.2397,-123.6055"
       X-Request-Id:
-      - 3b204817-ec86-4c96-aca5-360cafb9f325
+      - 54b970c8-801c-4b89-81c8-8d5f6bf13b64
       X-Correlation-Id:
-      - c4b7b93f
+      - 1d3d91de
       X-Server-Id:
-      - vm-bldr-nids-apiapp3.ncep.noaa.gov
+      - vm-bldr-nids-apiapp2.ncep.noaa.gov
       Access-Control-Allow-Origin:
       - "*"
       Access-Control-Expose-Headers:
@@ -42,15 +42,15 @@ http_interactions:
       Content-Length:
       - '483'
       Cache-Control:
-      - private, must-revalidate, max-age=76436
+      - private, must-revalidate, max-age=86341
       Expires:
-      - Mon, 14 Apr 2025 17:28:11 GMT
+      - Thu, 17 Apr 2025 02:00:59 GMT
       Date:
-      - Sun, 13 Apr 2025 20:14:15 GMT
+      - Wed, 16 Apr 2025 02:01:58 GMT
       Connection:
       - keep-alive
       X-Edge-Request-Id:
-      - b06a2005
+      - f0f3cf1c
       Vary:
       - Accept,Feature-Flags,Accept-Language
       Strict-Transport-Security:
@@ -59,14 +59,14 @@ http_interactions:
       encoding: UTF-8
       string: |-
         {
-            "correlationId": "c4b7b93f",
+            "correlationId": "1d3d91de",
             "title": "Adjusting Precision Of Point Coordinate",
             "type": "https://api.weather.gov/problems/AdjustPointPrecision",
             "status": 301,
             "detail": "The precision of latitude/longitude points is limited to 4 decimal digits for efficiency. The location attribute contains your request mapped to the nearest supported point. If your client supports it, you will be redirected.",
-            "instance": "https://api.weather.gov/requests/c4b7b93f"
+            "instance": "https://api.weather.gov/requests/1d3d91de"
         }
-  recorded_at: Sun, 13 Apr 2025 20:14:15 GMT
+  recorded_at: Wed, 16 Apr 2025 02:01:58 GMT
 - request:
     method: get
     uri: https://api.weather.gov/points/45.2397,-123.6055
@@ -97,26 +97,26 @@ http_interactions:
       Access-Control-Expose-Headers:
       - X-Correlation-Id, X-Request-Id, X-Server-Id
       X-Request-Id:
-      - 0fc52c92-0cb3-470f-9cfa-d9411093a87a
+      - 52762e09-b3ec-47e3-abc6-fc421862e4ba
       X-Correlation-Id:
-      - 9e7fe0ce
+      - 44e520e
       X-Server-Id:
-      - vm-bldr-nids-apiapp2.ncep.noaa.gov
+      - vm-bldr-nids-apiapp12.ncep.noaa.gov
       Vary:
       - Accept,Feature-Flags,Accept-Language
       - Accept-Encoding
       Cache-Control:
-      - public, max-age=76364, s-maxage=120
+      - public, max-age=86400, s-maxage=120
       Expires:
-      - Mon, 14 Apr 2025 17:26:59 GMT
+      - Thu, 17 Apr 2025 02:01:59 GMT
       Date:
-      - Sun, 13 Apr 2025 20:14:15 GMT
+      - Wed, 16 Apr 2025 02:01:59 GMT
       Content-Length:
       - '3062'
       Connection:
       - keep-alive
       X-Edge-Request-Id:
-      - b06a2231
+      - f0f3d4e4
       Strict-Transport-Security:
       - max-age=31536000 ; includeSubDomains ; preload
     body:
@@ -216,5 +216,5 @@ http_interactions:
                 "radarStation": "KRTX"
             }
         }
-  recorded_at: Sun, 13 Apr 2025 20:14:15 GMT
+  recorded_at: Wed, 16 Apr 2025 02:01:59 GMT
 recorded_with: VCR 6.3.1

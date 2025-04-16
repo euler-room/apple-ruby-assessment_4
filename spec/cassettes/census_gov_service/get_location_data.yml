@@ -20,7 +20,7 @@ http_interactions:
       message: ''
     headers:
       Date:
-      - Sun, 13 Apr 2025 20:14:14 GMT
+      - Wed, 16 Apr 2025 02:03:22 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -40,7 +40,7 @@ http_interactions:
       Vary:
       - Origin
       Set-Cookie:
-      - TS0193e6a1=01283c52a42d45a3a433c43f931f9287eb91ad095b86fb32153986c9b6c7172245da9405e3ea1084dacd1f211a7d232b63a396452b;
+      - TS0193e6a1=01283c52a43bc626772ecb2862e2ee2af8bb7be5a492f9f3ba57497eaa11307a806de248715556589330b7789712c4ff8c57e3ffbf;
         Path=/; Domain=.geocoding.geo.census.gov; Secure; HttpOnly;
     body:
       encoding: UTF-8
@@ -49,5 +49,5 @@ http_interactions:
         Address Ranges - Current Benchmark","id":"4","benchmarkName":"Public_AR_Current"}},"addressMatches":[{"tigerLine":{"side":"R","tigerLineId":"59661278"},"coordinates":{"x":-73.992154089981,"y":40.725164353193},"addressComponents":{"zip":"10003","streetName":"BOWERY","preType":"","city":"NEW
         YORK","preDirection":"","suffixDirection":"","fromAddress":"301","state":"NY","suffixType":"","toAddress":"315","suffixQualifier":"","preQualifier":""},"matchedAddress":"315
         BOWERY, NEW YORK, NY, 10003"}]}}'
-  recorded_at: Sun, 13 Apr 2025 20:14:14 GMT
+  recorded_at: Wed, 16 Apr 2025 02:03:22 GMT
 recorded_with: VCR 6.3.1

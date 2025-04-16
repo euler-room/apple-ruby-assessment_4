@@ -26,11 +26,11 @@ http_interactions:
       X-Powered-By:
       - PHP/8.0.30
       X-Request-Id:
-      - f0899200-9fe8-484b-ab7b-1e9ba84bed5a
+      - 5a182353-3600-4dd4-92bd-5ba1c14003fc
       X-Correlation-Id:
-      - a1bc9fc6
+      - 44e5382
       X-Server-Id:
-      - vm-bldr-nids-apiapp10.ncep.noaa.gov
+      - vm-bldr-nids-apiapp9.ncep.noaa.gov
       Access-Control-Allow-Origin:
       - "*"
       Access-Control-Expose-Headers:
@@ -38,17 +38,17 @@ http_interactions:
       Pragma:
       - no-cache
       Content-Length:
-      - '314'
+      - '312'
       Cache-Control:
-      - private, must-revalidate, max-age=86394
+      - private, must-revalidate, max-age=86400
       Expires:
-      - Mon, 14 Apr 2025 20:14:09 GMT
+      - Thu, 17 Apr 2025 02:01:59 GMT
       Date:
-      - Sun, 13 Apr 2025 20:14:15 GMT
+      - Wed, 16 Apr 2025 02:01:59 GMT
       Connection:
       - keep-alive
       X-Edge-Request-Id:
-      - b06a2458
+      - f0f3dd72
       Vary:
       - Accept,Feature-Flags,Accept-Language
       Strict-Transport-Security:
@@ -57,12 +57,12 @@ http_interactions:
       encoding: UTF-8
       string: |-
         {
-            "correlationId": "a1bc9fc6",
+            "correlationId": "44e5382",
             "title": "Invalid Parameter",
             "type": "https://api.weather.gov/problems/InvalidParameter",
             "status": 400,
             "detail": "Parameter \"point\" is invalid: '999,999' does not appear to be a valid coordinate",
-            "instance": "https://api.weather.gov/requests/a1bc9fc6"
+            "instance": "https://api.weather.gov/requests/44e5382"
         }
-  recorded_at: Sun, 13 Apr 2025 20:14:15 GMT
+  recorded_at: Wed, 16 Apr 2025 02:01:59 GMT
 recorded_with: VCR 6.3.1

@@ -20,7 +20,7 @@ http_interactions:
       message: ''
     headers:
       Date:
-      - Sun, 13 Apr 2025 20:14:14 GMT
+      - Wed, 16 Apr 2025 02:11:02 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -40,11 +40,11 @@ http_interactions:
       Vary:
       - Origin
       Set-Cookie:
-      - TS0193e6a1=01283c52a4f9f4c660ccd6a681971320ca6aa245d4efcea4c8687bba3eba2454a409a907f291d0055565752287cc74642df962e29f;
+      - TS0193e6a1=01283c52a4e0b51a509a078dcc7406499bbd605097516033d33addfb6efd5fa987d2e2f0c9e40cda2fa36f43817878bf8af096122c;
         Path=/; Domain=.geocoding.geo.census.gov; Secure; HttpOnly;
     body:
       encoding: UTF-8
       string: '{"result":{"input":{"address":{"zip":"00000","city":"Crisis","street":"Existential","state":"XO"},"benchmark":{"isDefault":true,"benchmarkDescription":"Public
         Address Ranges - Current Benchmark","id":"4","benchmarkName":"Public_AR_Current"}},"addressMatches":[]}}'
-  recorded_at: Sun, 13 Apr 2025 20:14:14 GMT
+  recorded_at: Wed, 16 Apr 2025 02:11:02 GMT
 recorded_with: VCR 6.3.1
