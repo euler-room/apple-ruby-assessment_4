@@ -6,7 +6,7 @@ class NationalWeatherService
   base_uri 'https://api.weather.gov'
   
   def self.get_forecast(latitude, longitude, zip)
-    Rails.cache.fetch("weather_forecast_#{zip}", expires_in: 10.seconds) do
+    Rails.cache.fetch("weather_forecast_#{zip}", expires_in: 30.minutes) do
       location_data = get_location_data(latitude, longitude)
       forecast_url = location_data['properties']['forecast']
       hourly_forecast_url = location_data['properties']['forecastHourly']
