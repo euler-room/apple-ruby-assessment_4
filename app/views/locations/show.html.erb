@@ -1,3 +1,8 @@
+<% content_for :back_button do %>
+  <ul class="nav nav-pills" justify-content-right>
+    <li class="nav-item"><a href=<%= new_location_path %> class="nav-link active" aria-current="page">Back</a></li>
+  </ul>
+<% end %>
 <% content_for :is_cached_result do %>
   <% if @cached_result %>
     <p class="h6">cached</p>
