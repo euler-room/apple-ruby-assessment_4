@@ -4,6 +4,7 @@ RSpec.describe NationalWeatherService do
   describe '.get_forecast' do
     let(:latitude) { 45.2397485 }
     let(:longitude) { -123.6054803 }
+    let(:zip) { '12345' }
     let(:forecast_uri) { 'https://forecast.uri' }
     before do
       allow(NationalWeatherService).to receive(:get_location_data).and_return(
@@ -13,15 +14,25 @@ RSpec.describe NationalWeatherService do
       )
       allow(NationalWeatherService).to receive(:get_forecast_data).and_return(
         'properties' => {
-          'periods' => []
+          'periods' => [{
+            'isDaytime' => true,
+            'icon' => 'day_icon.png',
+            'name' => 'Day',
+            'temperature' => 75
+          }, {
+            'isDaytime' => false,
+            'icon' => 'night_icon.png',
+            'name' => 'Night',
+            'temperature' => 60   
+          }]
         }
       )
     end
 
     it 'calls get_location_data and get_forecast_data' do
       expect(NationalWeatherService).to receive(:get_location_data).once
-      expect(NationalWeatherService).to receive(:get_forecast_data).once
-      NationalWeatherService.get_forecast(latitude, longitude)
+      expect(NationalWeatherService).to receive(:get_forecast_data).twice
+      NationalWeatherService.get_forecast(latitude, longitude, zip)
     end
   end
 
