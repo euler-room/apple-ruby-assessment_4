@@ -2,8 +2,8 @@
 
 **Apple (ruby-code-assessment-4)**
 - Rails 8 app for retrieving and displaying weather information by address.
-- Uses Census data to get coordinates from address ([geocoding.geo.census.gov](https://geocoding.geo.census.gov/geocoder/locations/address?street=%20315%20Bowery&city=new%20york&state=NY&zip=10006&benchmark=Public_AR_Current&format=json))
-- Uses the National Weather Service for forecast data ([api.weather.gov](https://api.weather.gov/gridpoints/OTX/149,57/forecast))
+- The CensusGovService class (`census_gov_service.rb') uses Census data to get coordinates from address ([geocoding.geo.census.gov](https://geocoding.geo.census.gov/geocoder/locations/address?street=%20315%20Bowery&city=new%20york&state=NY&zip=10006&benchmark=Public_AR_Current&format=json))
+- The NationWeatherService class (`app/services/national_weathe_service.rb`) uses the National Weather Service for forecast data ([api.weather.gov](https://api.weather.gov/gridpoints/OTX/149,57/forecast))
 - Caches National Weather Service requests by ZIP for 30 minutes.
 
 <div style="margin-left: 40px">
