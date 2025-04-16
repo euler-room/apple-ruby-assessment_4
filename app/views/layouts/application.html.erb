@@ -17,23 +17,21 @@
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   </head>
-  
-  <div class="container">
-    <header class="d-flex text-center py-3">
-      <p class="display-6 ">Weather Info <%= yield :is_cached_result %></p>
-      <div class="flex-grow-1"></div>
-        <ul class="nav nav-pills" justify-content-right>
-          <li class="nav-item"><a href=<%= new_location_path %> class="nav-link active" aria-current="page">Back</a></li>
-        </ul>
-      </div>
-    </header>
-  </div>
 
   <body>
-    <%= yield %>
+    <div class="container">
+      <header class="d-flex text-center py-3">
+        <p class="display-6">Weather Info <%= yield :is_cached_result %></p>
+        <div class="flex-grow-1"></div>
+        <%= yield :back_button %>
+      </header>
+
+      <%= render 'shared/flash' %>
+      
+      <%= yield %>
+    </div>
   </body>
 </html>
