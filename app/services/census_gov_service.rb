@@ -7,7 +7,25 @@ class CensusGovService
 
   def self.get_coordinates(location)
     location_data = get_location_data(location)
-    { latitude: location_data['coordinates']['y'], longitude: location_data['coordinates']['x'] }
+    return nil unless location_data && location_data['coordinates']
+
+    coordinates = {
+      latitude: location_data['coordinates']['y'],
+      longitude: location_data['coordinates']['x']
+    }
+
+    # Validate coordinates are present and numeric
+    if coordinates[:latitude].present? && coordinates[:longitude].present? &&
+       coordinates[:latitude].is_a?(Numeric) && coordinates[:longitude].is_a?(Numeric)
+      coordinates
+    else
+      Rails.logger.error "Invalid coordinates received: #{coordinates.inspect}"
+      nil
+    end
+  rescue StandardError => e
+    Rails.logger.error "Error getting coordinates: #{e.class} - #{e.message}"
+    Rails.logger.error e.backtrace.join("\n")
+    nil
   end
 
   # fetches coordinates for a given location instance: 
@@ -46,10 +64,33 @@ class CensusGovService
       benchmark: 4,
       format: 'json'
     })
-    if response['result']['addressMatches'].any?
-      response.parsed_response['result']['addressMatches'].first
-    else
-      raise "Error: No Matching Addresses"
+
+    unless response.success?
+      Rails.logger.error "Census API request failed: #{response.code} - #{response.body}"
+      return nil
     end
+
+    begin
+      parsed_response = response.parsed_response
+      address_matches = parsed_response.dig('result', 'addressMatches')
+
+      if address_matches&.any?
+        address_matches.first
+      else
+        Rails.logger.error "No matching addresses found for: #{location.attributes}"
+        nil
+      end
+    rescue JSON::ParserError => e
+      Rails.logger.error "Failed to parse Census API response: #{e.message}"
+      Rails.logger.error "Response body: #{response.body}"
+      nil
+    end
+  rescue HTTParty::Error => e
+    Rails.logger.error "HTTP request failed: #{e.class} - #{e.message}"
+    nil
+  rescue StandardError => e
+    Rails.logger.error "Unexpected error in get_location_data: #{e.class} - #{e.message}"
+    Rails.logger.error e.backtrace.join("\n")
+    nil
   end
 end

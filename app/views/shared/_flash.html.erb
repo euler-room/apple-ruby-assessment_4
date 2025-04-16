@@ -1,0 +1,12 @@
+<% if flash.any? %>
+  <div class="flash-messages mb-4">
+    <% flash.each do |name, msg| %>
+      <% if msg.is_a?(String) %>
+        <div class="alert <%= name == 'notice' ? 'alert-info' : 'alert-warning' %> alert-dismissible fade show" role="alert">
+          <%= msg %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

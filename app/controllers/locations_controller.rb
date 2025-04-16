@@ -1,18 +1,24 @@
 class LocationsController < ApplicationController
   def new
-    @location = Location.new()
+    @location = Location.new
   end
 
   def create
     @location = Location.find_by_address(location_params) || Location.new(location_params)
+    
     unless @location.latitude && @location.longitude
-      @location.save_with_coordinates
+      success = @location.save_with_coordinates
+      unless success
+        flash.now[:alert] = "Could not find coordinates for this address."
+        return render :new, status: :unprocessable_entity
+      end
     end
-    if @location.valid?
-      redirect_to action: :show, id: @location.id
+
+    if @location.save
+      redirect_to location_path(@location)
     else
-      flash.now[:alert] = "Location not found."
-      render :new
+      flash.now[:alert] = @location.errors.full_messages.to_sentence
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -24,13 +30,16 @@ class LocationsController < ApplicationController
         @cached_result = true
       else
         @forecast = NationalWeatherService.get_forecast(@location.latitude, @location.longitude, @location.zip)
-        @cached_resuilt = false
+        @cached_result = false
       end
       render :show
     else
-      flash.now[:alert] = "Location not found."
+      flash[:alert] = "Location not found."
       redirect_to action: :new
     end
+  rescue ActiveRecord::RecordNotFound
+    flash[:alert] = "Location not found."
+    redirect_to action: :new
   end
 
   private

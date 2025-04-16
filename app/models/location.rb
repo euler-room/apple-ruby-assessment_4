@@ -3,35 +3,51 @@ class Location < ApplicationRecord
   validates :latitude, presence: true, numericality: true
   validates :longitude, presence: true, numericality: true
   validates :city, presence: true
-  validates :state, presence: true, length: { is: 2 }, format: { with: /\A[A-Z]{2}\z/, message: "must be two uppercase letters" }
+  validates :state, presence: true, length: { is: 2 }
   validates :street, presence: true
 
   def set_coordinates
     coordinates = CensusGovService.get_coordinates(self)
-    self.latitude = coordinates[:latitude]
-    self.longitude = coordinates[:longitude]
-  end
-
-  def save_with_coordinates
-    set_coordinates
-    if valid?
-      save
-      self
+    
+    if coordinates
+      self.latitude = coordinates[:latitude]
+      self.longitude = coordinates[:longitude]
+      Rails.logger.info "Coordinates set to: lat=#{latitude}, long=#{longitude}"
+      true
     else
+      Rails.logger.error "Failed to get coordinates from CensusGovService"
       false
     end
   rescue StandardError => e
-    Rails.logger.error "Error saving location with coordinates: #{e.message}"
+    Rails.logger.error "Error in set_coordinates: #{e.class} - #{e.message}"
+    Rails.logger.error e.backtrace.join("\n")
     false
   end
 
-  def self.find_by_address(address)
-    address.each{ |k, v| v.upcase!}
+  def save_with_coordinates
+    return false unless set_coordinates
+    
+    if valid?
+      save
+      true
+    else
+      Rails.logger.error "Validation failed: #{errors.full_messages.join(', ')}"
+      false
+    end
+  rescue StandardError => e
+    Rails.logger.error "Error in save_with_coordinates: #{e.class} - #{e.message}"
+    Rails.logger.error e.backtrace.join("\n")
+    false
+  end
+
+  def self.find_by_address(params)
+    normalized_params = params.transform_values(&:upcase)
+    
     where(
-      street: address['street'],
-      city: address['city'],
-      state: address['state'],
-      zip: address['zip']
+      street: normalized_params[:street],
+      city: normalized_params[:city],
+      state: normalized_params[:state],
+      zip: normalized_params[:zip]
     ).first
   end
 
