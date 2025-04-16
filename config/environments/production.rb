@@ -9,8 +9,8 @@ Rails.application.configure do
   # Eager load code on boot for better performance and memory savings (ignored by Rake tasks).
   config.eager_load = true
 
-  # Full error reports are disabled.
-  config.consider_all_requests_local = false
+  # Full error reports are enabled for debugging.
+  config.consider_all_requests_local = true
 
   # Turn on fragment caching in view templates.
   config.action_controller.perform_caching = true
@@ -25,10 +25,10 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
-  config.assume_ssl = true
+  config.assume_ssl = false
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  config.force_ssl = false
 
   # Skip http-to-https redirect for the default health check endpoint.
   # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
@@ -37,8 +37,8 @@ Rails.application.configure do
   config.log_tags = [ :request_id ]
   config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
 
-  # Change to "debug" to log everything (including potentially personally-identifiable information!)
-  config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
+  # Set to "debug" to log everything (including potentially personally-identifiable information!)
+  config.log_level = :debug
 
   # Prevent health checks from clogging up the logs.
   config.silence_healthcheck_path = "/up"
