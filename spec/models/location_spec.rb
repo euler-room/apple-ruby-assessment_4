@@ -50,7 +50,7 @@ RSpec.describe Location, type: :model do
   end
 
   describe '.find_by_address' do
-    let!(:location) { Location.create(street: '315 BOWERY', city: 'NEW YORK', state: 'NY', zip: '10003', latitude: 40, longitude: -100) }
+    let!(:location) { Location.create(street: '315 Bowery', city: 'New York', state: 'NY', zip: '10003', latitude: 40, longitude: -100) }
     let(:address) { { 'street' => '315 BOWERY', 'city' => 'NEW YORK', 'state' => 'NY', 'zip' => '10003' } }
     
     it 'finds the location by address' do

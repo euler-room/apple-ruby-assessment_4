@@ -5,6 +5,8 @@ class Location < ApplicationRecord
   validates :city, presence: true
   validates :state, presence: true, length: { is: 2 }
   validates :street, presence: true
+  
+  before_save :normalize_data
 
   def set_coordinates
     coordinates = CensusGovService.get_coordinates(self)
@@ -40,17 +42,28 @@ class Location < ApplicationRecord
   end
 
   def self.find_by_address(params)
-    normalized_params = params.transform_keys(&:to_sym).transform_values(&:upcase)
-    
+  
     where(
-      street: normalized_params[:street],
-      city: normalized_params[:city],
-      state: normalized_params[:state],
-      zip: normalized_params[:zip]
+      street: params['street'].to_s.downcase.titleize,
+      city: params['city'].to_s.downcase.titleize,
+      state: params['state'].to_s.upcase,
+      zip: params['zip'].to_s
     ).first
   end
 
   def self.recent
     order(updated_at: :desc).limit(5)
+  end
+
+  
+  def normalize_data
+
+    self.street = street.to_s.downcase.titleize
+    self.city = city.to_s.downcase.titleize
+    self.state = state.to_s.upcase
+    self.zip = zip.to_s
+    self.latitude = latitude&.to_f
+    self.longitude = longitude&.to_f
+   
   end
 end
