@@ -23,7 +23,9 @@ RUN apt-get update -qq && \
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development"
+    BUNDLE_WITHOUT="development" \
+    PORT=3000 \
+    RAILS_RELATIVE_URL_ROOT="/"
 
 # Throw-away build stage to reduce size of final image
 FROM base AS build
@@ -61,7 +63,11 @@ RUN bundle exec bootsnap precompile app/ lib/
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
+# Set up and migrate database during build process
+# Using SECRET_KEY_BASE_DUMMY for schema loading and migrations
+RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails db:create db:schema:load db:migrate
 
+# Clean up node_modules
 RUN rm -rf node_modules
 
 
@@ -82,5 +88,6 @@ USER 1000:1000
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start server via Thruster by default, this can be overwritten at runtime
-EXPOSE 80
-CMD ["./bin/thrust", "./bin/rails", "server"]
+EXPOSE 3000
+# Start server on port 3000 and bind to all interfaces
+CMD ["./bin/thrust", "./bin/rails", "server", "-b", "0.0.0.0", "-p", "3000"]
