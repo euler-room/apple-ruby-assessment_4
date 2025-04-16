@@ -6,6 +6,11 @@
 - Uses the National Weather Service for forecast data ([api.weather.gov](https://api.weather.gov/gridpoints/OTX/149,57/forecast))
 - Caches National Weather Service for 30 minutes requests at a ZIP code level of accuracy.
 
+<div style="margin-left: 40px">
+   <img src="public/images/http-request-cached.png" alt="Cached HTTP request example" width="700">
+</div>
+
+
 
 ## Prerequisites
 
