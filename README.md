@@ -144,8 +144,8 @@ If the command is not found, you'll need to [install Docker](https://docs.docker
    Created database 'weather_info_production'
    Running database migrations...
    == 20250416000000 CreateWeatherForecasts: migrating ===========================
-   -- create_table(:weather_forecasts)
-      -> 0.0012s
+      (6.3ms) CREATE TABLE "locations" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "latitude" float, "longitude" float, "street" varchar, 
+      "city" varchar, "state" varchar, "zip" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)
    == 20250416000000 CreateWeatherForecasts: migrated (0.0013s) ==================
    Verifying database setup...
    Current version: 20250416000000
