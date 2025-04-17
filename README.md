@@ -139,16 +139,10 @@ If the command is not found, you'll need to [install Docker](https://docs.docker
    You should see output similar to:
 
    ```
-   Setting up database...
-   Resetting database...
-   Created database 'weather_info_production'
-   Running database migrations...
-   == 20250416000000 CreateWeatherForecasts: migrating ===========================
-      (6.3ms) CREATE TABLE "locations" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "latitude" float, "longitude" float, "street" varchar, 
-      "city" varchar, "state" varchar, "zip" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)
-   == 20250416000000 CreateWeatherForecasts: migrated (0.0013s) ==================
-   Verifying database setup...
-   Current version: 20250416000000
+   Created database 'storage/production_cable.sqlite3'
+   (0.9ms) DROP TABLE IF EXISTS "locations"
+   (6.3ms) CREATE TABLE "locations" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "latitude" float, "longitude" float, "street" varchar, "city" varchar, "state" varchar, "zip" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)
+   (0.3ms) CREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)
    ```
 
    **Important**: The database is reset each time the container starts. This is appropriate for this assessment application but may not be desired in actual production deployments.
