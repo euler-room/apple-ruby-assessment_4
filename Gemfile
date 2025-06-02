@@ -42,7 +42,7 @@ gem "thruster", require: false
 gem "httparty", "~> 0.18.1"
 
 # csv library
-gem "csv", "~> 3.2"
+gem "csv", "~> 3.3"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
