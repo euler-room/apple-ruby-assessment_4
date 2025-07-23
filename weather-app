@@ -1,0 +1,147 @@
+#!/bin/bash
+
+log_info() {
+  printf "\n\e[0;35m $1\e[0m\n\n"
+}
+
+log_warn() {
+  printf "\e[0;33m $1\e[0m\n"
+}
+
+cleanup_temp_files() {
+    if [ -d "tmp/pids" ]; then
+        log_info "Cleaning up temporary PID files.."
+        rm -f tmp/pids/*.pid
+    fi
+}
+
+start() {
+    # Clean up any existing temporary files first
+    cleanup_temp_files
+    
+    log_info "Fetching latest Weather Info Image.."
+    docker pull gbuchanan/weather_info:latest
+
+    log_info "Starting Weather Info Application.."
+    
+    # Check if container already exists
+    if [ "$(docker ps -aq -f name=weather_info)" ]; then
+        log_warn "Container 'weather_info' already exists. Removing it first.."
+        docker rm -f weather_info
+    fi
+    
+    # Start the container
+    if [ -f "config/master.key" ]; then
+        MASTER_KEY=$(cat config/master.key)
+        docker run -d \
+            -p 3000:3000 \
+            -e RAILS_MASTER_KEY=$MASTER_KEY \
+            --name weather_info \
+            gbuchanan/weather_info:latest
+        
+        log_info "Weather Info URL: http://localhost:3000"
+        log_info "Container started successfully!"
+    else
+        log_warn "config/master.key not found! Please ensure it exists."
+        log_warn "You can also manually set RAILS_MASTER_KEY when running the container."
+        exit 1
+    fi
+}
+
+stop() {
+    log_info "Stopping Weather Info container.."
+    docker stop weather_info
+}
+
+destroy() {
+    log_info "Stopping and removing Weather Info container.."
+    docker stop weather_info 2>/dev/null || true
+    docker rm -f weather_info 2>/dev/null || true
+    
+    cleanup_temp_files
+}
+
+cleanup() {
+    log_warn "** WARNING: This will remove the Weather Info container and image **"
+    log_warn "You will need to re-download or rebuild the image."
+    echo ""
+    read -p "Do you want to proceed? (yes/no) " yn
+
+    if [[ $yn == y* ]]; then
+        log_info "Removing Weather Info container and images.."
+        destroy
+        # Remove the weather_info images
+        docker rmi $(docker images -f "reference=gbuchanan/weather_info*" -q) 2>/dev/null || true
+        docker rmi $(docker images -f "reference=weather_info*" -q) 2>/dev/null || true
+        
+        # Ensure temp files are cleaned up even if destroy had issues
+        cleanup_temp_files
+    else
+        log_info "cleanup cancelled. exiting.."
+    fi
+}
+
+logs() {
+    log_info "Showing Weather Info container logs.."
+    docker logs -f weather_info
+}
+
+status() {
+    if [ "$(docker ps -q -f name=weather_info)" ]; then
+        log_info "Weather Info container is running"
+        docker ps -f name=weather_info
+    else
+        log_warn "Weather Info container is not running"
+        if [ "$(docker ps -aq -f name=weather_info)" ]; then
+            log_info "Container exists but is stopped"
+            docker ps -a -f name=weather_info
+        fi
+    fi
+}
+
+build() {
+    log_info "Building Weather Info Docker image locally.."
+    docker build -t weather_info .
+    
+    log_info "Image built successfully!"
+    log_info "To push to Docker Hub, run:"
+    log_info "  docker tag weather_info:latest gbuchanan/weather_info:latest"
+    log_info "  docker push gbuchanan/weather_info:latest"
+}
+
+case "$1" in
+    'start')
+        start
+        ;;
+    'stop')
+        stop
+        ;;
+    'destroy')
+        destroy
+        ;;
+    'cleanup')
+        cleanup
+        ;;
+    'logs')
+        logs
+        ;;
+    'status')
+        status
+        ;;
+    'build')
+        build
+        ;;
+    *)
+        log_info "Usage: $0 { start | stop | destroy | cleanup | logs | status | build }"
+        log_info ""
+        log_info "Commands:"
+        log_info "  start   - Pull and start the Weather Info container"
+        log_info "  stop    - Stop the running container"
+        log_info "  destroy - Stop and remove the container"
+        log_info "  cleanup - Remove container and all images (requires re-download)"
+        log_info "  logs    - Show container logs (follow mode)"
+        log_info "  status  - Show container status"
+        log_info "  build   - Build the Docker image locally"
+        exit 1
+        ;;
+esac
