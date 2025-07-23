@@ -1,232 +1,305 @@
 # Weather Info Application
 
-**Apple (ruby-code-assessment-4)**
-- Rails 8 app for retrieving and displaying weather information by address.
-- The CensusGovService class (`app/services/census_gov_service.rb`) uses Census data to get coordinates from address ([geocoding.geo.census.gov](https://geocoding.geo.census.gov/geocoder/locations/address?street=%20315%20Bowery&city=new%20york&state=NY&zip=10006&benchmark=Public_AR_Current&format=json))
-- The NationWeatherService class (`app/services/national_weather_service.rb`) uses the National Weather Service for forecast data ([api.weather.gov](https://api.weather.gov/gridpoints/OTX/149,57/forecast))
-- Caches National Weather Service requests by ZIP for 30 minutes.
+A Ruby on Rails application that provides weather information, containerized with Docker for easy deployment.
 
-<div style="margin-left: 40px">
-   <img src="public/images/http-request-cached.png" alt="Cached HTTP request example" width="700">
-</div>
+## Quick Start
 
+### Prerequisites
+- Docker Desktop installed and running
+- Git (to clone the repository)
 
+### Running the Application
 
-## Prerequisites
+This project includes a `weather-app` management script that simplifies all Docker operations. Here's how to get started:
 
-- Ruby 3.4.2
-- Node.js 20.11.1
-- Yarn
-- SQLite3
+1. **Clone the repository:**
+```bash
+git clone https://github.com/euler-room/apple-ruby-assessment_4.git
+cd apple-ruby-assessment_4
+```
 
-## Getting Started
+2. **Generate a master key (first time only):**
+```bash
+openssl rand -hex 32 > config/master.key
+chmod 600 config/master.key
+```
 
-### Local Development Setup
+3. **Start the application:**
+```bash
+./weather-app start
+```
 
-1. **Clone the repository**
+The application will automatically:
+- Pull the latest Docker image from Docker Hub
+- Start the container with proper configuration
+- Be available at http://localhost:3000
 
-   ```bash
-   git clone https://github.com/yourusername/weather-info.git
-   cd weather-info
-   ```
+### Managing the Application
 
-2. **Install Ruby dependencies**
-
-   ```bash
-   bundle install
-   ```
-
-3. **Install JavaScript dependencies**
-
-   ```bash
-   yarn install
-   ```
-
-4. **Set up the database**
-
-   ```bash
-   bin/rails db:create
-   bin/rails db:migrate
-   bin/rails db:seed  # if seed data is available
-   ```
-
-5. **Start the Rails server with frontend compilation**
-
-   ```bash
-   bin/dev  # This uses the Procfile.dev configuration
-   ```
-
-   Alternatively, you can run each process separately:
-
-   ```bash
-   # In separate terminal windows:
-   bin/rails server
-   yarn build:css --watch
-   yarn build --watch
-   ```
-
-6. **Access the application**
-
-   Open your browser and navigate to `http://localhost:3000`
-
-### Running Tests
+The `weather-app` script provides all the commands you need:
 
 ```bash
-bundle exec rspec     # for RSpec tests
+# Check if the application is running
+./weather-app status
+
+# View application logs (real-time)
+./weather-app logs
+
+# Stop the application
+./weather-app stop
+
+# Restart the application
+./weather-app destroy
+./weather-app start
+
+# Build from source (if you made code changes)
+./weather-app build
 ```
 
-## Docker Deployment
+### Complete Command Reference
 
-The application includes Docker configuration for production deployment. The Dockerfile is configured to build a fully functional container with no additional configuration beyond providing the Rails master key.
+| Command | Description |
+|---------|-------------|
+| `./weather-app start` | Pull latest image and start the container |
+| `./weather-app stop` | Stop the running container |
+| `./weather-app status` | Check container status |
+| `./weather-app logs` | View and follow container logs |
+| `./weather-app destroy` | Stop and remove the container |
+| `./weather-app cleanup` | Remove container and all images (requires re-download) |
+| `./weather-app build` | Build the Docker image locally from source |
 
-### Check if Docker is installed
+## Docker Hub
 
-To verify if Docker is installed on your machine, open a terminal and run:
+The application is available as a pre-built Docker image on Docker Hub:
 
 ```bash
-docker --version
+docker pull gbuchanan/weather_info:latest
 ```
 
-If Docker is installed, you'll see output similar to:
+### Running with Docker Directly
+
+If you prefer to run the container directly without the management script:
+
+```bash
+# Create a master key file if you don't have one
+echo "your-secret-key-here" > config/master.key
+
+# Run the container
+docker run -d \
+  -p 3000:3000 \
+  -e RAILS_MASTER_KEY=$(cat config/master.key) \
+  -e SECRET_KEY_BASE=$(cat config/master.key) \
+  --name weather_info \
+  gbuchanan/weather_info:latest
 ```
-Docker version 24.0.6, build f1bf695
+
+## Building from Source
+
+### Prerequisites
+
+- Docker
+- Docker Compose (optional)
+- Git
+
+### Build Steps
+
+1. Clone the repository:
+```bash
+git clone https://github.com/euler-room/apple-ruby-assessment_4.git
+cd apple-ruby-assessment_4
 ```
 
-If the command is not found, you'll need to [install Docker](https://docs.docker.com/get-docker/) before proceeding.
+2. Build the Docker image:
+```bash
+./weather-app build
+# OR
+docker build -t weather_info .
+```
 
-### Building and Running with Docker
+3. Run the application:
+```bash
+./weather-app start
+```
 
-1. **Build the Docker image**
-   \** *from the project's root directory* \**
+## Configuration
 
-   ```bash
-   docker build -t weather_info .
-   ```
+### Master Key
 
-2. **Run the container**
+The application requires a Rails master key for production. The management script will look for this in `config/master.key`. 
 
-   ```bash
-   docker run -d -p 8080:3000 -e RAILS_MASTER_KEY=4e143cd0f4efe28cb63f436ec7626574 --name weather_info weather_info
-   ```
+To generate a new master key:
+```bash
+openssl rand -hex 32 > config/master.key
+chmod 600 config/master.key
+```
 
-   The master key can be found in the `config/master.key` file.
-   ***Note: (This file/secret should not be committed to Git in any other scenario...I have included it for ease of assessment).***
+**Important**: Never commit the master key to version control!
 
-   <br>
+### Environment Variables
 
-   **Note on Environment and Configuration**: 
-   
-   * The container is configured to run in production mode automatically
-   * No additional configuration is needed beyond the RAILS_MASTER_KEY
-   * The container exposes port 3000 internally (mapped to 8080 on the host in the example above)
+The Docker container accepts the following environment variables:
 
-   <br>
+- `RAILS_MASTER_KEY` - Required: The Rails master key for decrypting credentials
+- `SECRET_KEY_BASE` - Required: Secret key base for the application (can be the same as RAILS_MASTER_KEY)
+- `PORT` - Optional: Port to run the application on (default: 3000)
 
-   **Automatic Database Setup**: 
-   
-   The container automatically sets up the database during container startup via the entrypoint script. Each time the container starts:
+## Development
 
-   1. The database is reset (dropped and recreated) with `db:reset`
-   2. Migrations are run with `db:migrate` 
-   3. Schema version is verified with `db:version`
+### Local Development
 
-   You can verify this is happening by checking the logs:
+For local development without Docker:
 
-   ```bash
-   docker logs weather_info
-   ```
+1. Install Ruby 3.4.2
+2. Install dependencies:
+```bash
+bundle install
+yarn install
+```
 
-   You should see output similar to:
+3. Set up the database:
+```bash
+rails db:create db:migrate
+```
 
-   ```
-   RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails db:create db:schema:load db:migrate...2.1s
-     Created database 'storage/production_cable.sqlite3'
-     (0.9ms) DROP TABLE IF EXISTS "locations"
-     (6.3ms) CREATE TABLE "locations" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "latitude" float, "longitude" float, "street" varchar, "city" varchar, "state" varchar, "zip" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)
-     (0.3ms) CREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)
-   ```
+4. Run the server:
+```bash
+rails server
+```
 
-   **Important**: The database is reset each time the container starts. This is appropriate for this assessment application but may not be desired in actual production deployments.
+### Docker Development
 
-   <br>
+The Dockerfile is optimized for production use. For development, you can:
 
-3. **Managing Docker containers**
+1. Build a local image:
+```bash
+./weather-app build
+```
 
-   If you need to stop and remove a previously created container with the same name:
+2. Run with volume mounts for live code updates:
+```bash
+docker run -d \
+  -p 3000:3000 \
+  -v $(pwd):/rails \
+  -e RAILS_MASTER_KEY=$(cat config/master.key) \
+  -e SECRET_KEY_BASE=$(cat config/master.key) \
+  --name weather_info_dev \
+  weather_info:latest
+```
 
-   ```bash
-   # Stop the container
-   docker stop weather_info
+## Deployment
 
-   # Remove the container
-   docker rm weather_info
-   ```
+The application is configured for production deployment with:
 
-4. **Verify container status**
+- Optimized multi-stage Docker build
+- Minimal final image size
+- Non-root user for security
+- Pre-compiled assets
+- Database migrations run during build
 
-   Check if the container is running properly:
+### Deploy to Production
 
-   ```bash
-   docker ps | grep weather_info
-   ```
+1. Pull the latest image:
+```bash
+docker pull gbuchanan/weather_info:latest
+```
 
-   You should see output showing the container running with port 8080 mapped to container port 3000.
+2. Run with production configuration:
+```bash
+docker run -d \
+  -p 80:3000 \
+  -e RAILS_MASTER_KEY=your-production-master-key \
+  -e SECRET_KEY_BASE=your-production-secret-key \
+  --name weather_info_prod \
+  --restart unless-stopped \
+  gbuchanan/weather_info:latest
+```
 
-5. **View container logs**
+## Troubleshooting
 
-   If you encounter issues, check the container logs:
+### Common Issues with weather-app Script
 
-   ```bash
-   docker logs weather_info
+#### Docker not running
+If you see "Cannot connect to Docker daemon":
+```bash
+# Make sure Docker Desktop is running
+# On Windows/Mac: Start Docker Desktop from your applications
+# On Linux: sudo systemctl start docker
+```
 
-   # To follow log output in real-time
-   docker logs -f weather_info
-   ```
+#### Permission denied
+If you get "Permission denied" when running `./weather-app`:
+```bash
+# Make the script executable
+chmod +x weather-app
+```
 
-6. **Access the application**
+#### Container won't start
+Check what's happening:
+```bash
+# View the logs
+./weather-app logs
 
-   Open your browser and navigate to `http://localhost:8080`
+# Check container status
+./weather-app status
 
-## Technology Stack
+# Try destroying and restarting
+./weather-app destroy
+./weather-app start
+```
 
-- **Backend**: Rails 8.0.2
-- **Database**: SQLite3
-- **Frontend**: Bootstrap 5, PostCSS
-- **Testing**: RSpec, VCR for HTTP mocking
-- **Deployment**: Docker
+### Master key issues
 
-## Docker Troubleshooting
+If you see errors about missing or invalid master key:
+```bash
+# Check if master.key exists
+ls -la config/master.key
 
-If you encounter issues with Docker deployment, try these troubleshooting steps:
+# If not, create it
+openssl rand -hex 32 > config/master.key
+chmod 600 config/master.key
 
-1. **Port conflicts**: If port 8080 is already in use, you can map to a different port:
+# Restart the application
+./weather-app destroy
+./weather-app start
+```
 
-   ```bash
-   docker run -d -p 9000:3000 -e RAILS_MASTER_KEY=4e143cd0f4efe28cb63f436ec7626574 --name weather_info weather_info
-   ```
+### Port already in use
 
-2. **Database setup issues**: If you encounter database-related errors, you can force a rebuild of the Docker image:
+If port 3000 is already in use:
+```bash
+# Find what's using port 3000
+lsof -i :3000
+# OR on Windows
+netstat -ano | findstr :3000
 
-   ```bash
-   docker build --no-cache -t weather_info .
-   ```
+# Option 1: Stop the conflicting service
+# Option 2: Modify the weather-app script to use a different port
+# Option 3: Stop all containers and restart
+./weather-app destroy
+./weather-app start
+```
 
-3. **Browser access issues**: If you can't access the application in your browser but `curl` works:
+### Updating to Latest Version
 
-   ```bash
-   curl -v http://localhost:8080/
-   ```
+To get the latest version of the application:
+```bash
+# Pull latest code
+git pull origin main
 
-   - Try clearing your browser cache
-   - Try a different browser
-   - Try accessing via IP address, e.g., `http://127.0.0.1:8080`
-   - Ensure no firewall or security software is blocking the connection
+# Clean up old images
+./weather-app cleanup
 
-4. **Explicitly force binding to all interfaces**:
+# Start fresh
+./weather-app start
+```
 
-   ```bash
-   docker run -d -p 8080:3000 -e RAILS_MASTER_KEY=4e143cd0f4efe28cb63f436ec7626574 -e BINDING=0.0.0.0 --name weather_info weather_info
-   ```
+## Contributing
 
-## Known Issues
-- census.gov was chosen for my geocoding service because it is free and needs no account/authentication. Having said that, it can be a little flakey and won't always return geocoding records for legitimate addresses. 
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## License
+
+This project is part of an assessment and may have specific licensing terms.
