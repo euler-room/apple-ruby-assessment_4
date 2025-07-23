@@ -19,8 +19,30 @@ start() {
     # Clean up any existing temporary files first
     cleanup_temp_files
     
-    log_info "Fetching latest Weather Info Image.."
-    docker pull gbuchanan/weather_info:latest
+    # Check if master key exists, if not create it
+    if [ ! -f "config/master.key" ]; then
+        log_warn "Master key not found. Generating a new one.."
+        
+        # Ensure config directory exists
+        mkdir -p config
+        
+        # Generate a secure random key
+        openssl rand -hex 32 > config/master.key
+        chmod 600 config/master.key
+        
+        log_info "Generated new master key in config/master.key"
+        log_warn "IMPORTANT: Keep this key safe! You'll need it to decrypt any encrypted credentials."
+    fi
+    
+    # Check if local image exists, otherwise pull from Docker Hub
+    if docker images | grep -q "^weather_info\s*latest"; then
+        log_info "Using local Weather Info image.."
+        IMAGE_NAME="weather_info:latest"
+    else
+        log_info "Local image not found. Fetching from Docker Hub.."
+        docker pull gbuchanan/weather_info:latest
+        IMAGE_NAME="gbuchanan/weather_info:latest"
+    fi
 
     log_info "Starting Weather Info Application.."
     
@@ -31,21 +53,16 @@ start() {
     fi
     
     # Start the container
-    if [ -f "config/master.key" ]; then
-        MASTER_KEY=$(cat config/master.key)
-        docker run -d \
-            -p 3000:3000 \
-            -e RAILS_MASTER_KEY=$MASTER_KEY \
-            --name weather_info \
-            gbuchanan/weather_info:latest
-        
-        log_info "Weather Info URL: http://localhost:3000"
-        log_info "Container started successfully!"
-    else
-        log_warn "config/master.key not found! Please ensure it exists."
-        log_warn "You can also manually set RAILS_MASTER_KEY when running the container."
-        exit 1
-    fi
+    MASTER_KEY=$(cat config/master.key)
+    docker run -d \
+        -p 3000:3000 \
+        -e RAILS_MASTER_KEY=$MASTER_KEY \
+        -e SECRET_KEY_BASE=$MASTER_KEY \
+        --name weather_info \
+        $IMAGE_NAME
+    
+    log_info "Weather Info URL: http://localhost:3000"
+    log_info "Container started successfully!"
 }
 
 stop() {
