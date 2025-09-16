@@ -78,4 +78,4 @@ gem "vcr", "~> 6.3"
 
 gem "webmock", "~> 3.25"
 
-gem "shoulda-matchers", "~> 6.4", groups: [:test, :development]
+gem "shoulda-matchers", "~> 6.5", groups: [:test, :development]
